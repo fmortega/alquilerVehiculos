@@ -1,7 +1,11 @@
 package alquilerVehiculos;
 
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class Alquilar extends javax.swing.JPanel {
@@ -17,6 +21,17 @@ public class Alquilar extends javax.swing.JPanel {
 
         initComponents();
         model = (DefaultTableModel) tablaReporte.getModel();
+        btnGuardar.setEnabled(false);
+    }
+
+    public void limpiar() {
+        txtDias.setText("");
+        txtMatricula.setText("");
+        combo.setSelectedIndex(0);
+    }
+
+    public boolean validacion() {
+        return !(combo.getSelectedIndex() == 0 || txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty());
     }
 
     @SuppressWarnings("unchecked")
@@ -40,8 +55,14 @@ public class Alquilar extends javax.swing.JPanel {
         setName("alquila"); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Alquiler de vehiculos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14), new java.awt.Color(153, 153, 153))); // NOI18N
+        jPanel1.setAlignmentY(5.0F);
 
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Coche", "Microbus", "Furgoneta Carga", "Camion" }));
+        combo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboMouseClicked(evt);
+            }
+        });
 
         jLabel1.setText("Tipo Vehiculo");
 
@@ -56,7 +77,22 @@ public class Alquilar extends javax.swing.JPanel {
 
         jLabel2.setText("Matricula");
 
+        txtMatricula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMatriculaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMatriculaKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Dias");
+
+        txtDias.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDiasKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -109,18 +145,15 @@ public class Alquilar extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Vehiculo", "Matricula", "Dias Alquilados", "Precio"
+                "Vehiculo", "Matricula", "Dias", "Precio"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
+        tablaReporte.setAlignmentX(10.0F);
+        tablaReporte.setAlignmentY(5.0F);
+        tablaReporte.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         tablaReporte.setEnabled(false);
+        tablaReporte.setRowHeight(25);
+        tablaReporte.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tablaReporte);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -134,18 +167,18 @@ public class Alquilar extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        double preciofinal = 0;
-        int dias = Integer.parseInt(txtDias.getText());
 
-        if (txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty()) {
+        if (combo.getSelectedIndex() == 0 || txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Complete todos los campos");
         } else {
+            double preciofinal = 0;
+            int dias = Integer.parseInt(txtDias.getText());
             String combo2 = (String) combo.getSelectedItem();
             switch (combo2) {
                 case "Coche":
@@ -168,9 +201,64 @@ public class Alquilar extends javax.swing.JPanel {
 
             fila[3] = preciofinal;
             model.addRow(fila);
+            DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+            modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+            tablaReporte.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
+            tablaReporte.getColumnModel().getColumn(1).setCellRenderer(modelocentrar);
+            tablaReporte.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
+            tablaReporte.getColumnModel().getColumn(3).setCellRenderer(modelocentrar);
+
+            limpiar();
+            btnGuardar.setEnabled(false);
         }
 
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtMatriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMatriculaKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtDias.requestFocus();
+
+        }
+
+        if (validacion()) {
+            btnGuardar.setEnabled(true);
+        } else {
+            btnGuardar.setEnabled(false);
+        }
+
+    }//GEN-LAST:event_txtMatriculaKeyReleased
+
+    private void txtMatriculaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMatriculaKeyTyped
+        Character c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtMatricula.getText().length() >= 10) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_txtMatriculaKeyTyped
+
+    private void txtDiasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiasKeyReleased
+
+        if (validacion()) {
+            btnGuardar.setEnabled(true);
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                btnGuardar.doClick();
+
+            }
+        } else {
+            btnGuardar.setEnabled(false);
+        }
+    }//GEN-LAST:event_txtDiasKeyReleased
+
+    private void comboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboMouseClicked
+        if (validacion()) {
+            btnGuardar.setEnabled(true);
+        } else {
+            btnGuardar.setEnabled(false);
+        }
+    }//GEN-LAST:event_comboMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

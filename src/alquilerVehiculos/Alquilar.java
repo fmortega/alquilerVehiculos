@@ -3,7 +3,7 @@ package alquilerVehiculos;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
+
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -32,6 +32,7 @@ public class Alquilar extends javax.swing.JPanel {
 
     public boolean validacion() {
         return !(combo.getSelectedIndex() == 0 || txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty());
+      
     }
 
     @SuppressWarnings("unchecked")
@@ -47,6 +48,7 @@ public class Alquilar extends javax.swing.JPanel {
         txtMatricula = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtDias = new javax.swing.JTextField();
+        lblerror = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaReporte = new javax.swing.JTable();
 
@@ -98,9 +100,6 @@ public class Alquilar extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(btnGuardar)
-                .addGap(0, 741, Short.MAX_VALUE))
             .addComponent(jSeparator1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -117,7 +116,12 @@ public class Alquilar extends javax.swing.JPanel {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtDias, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(434, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGuardar)
+                    .addComponent(lblerror, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,7 +139,9 @@ public class Alquilar extends javax.swing.JPanel {
                 .addComponent(btnGuardar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblerror, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(97, Short.MAX_VALUE))
         );
 
         tablaReporte.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -173,8 +179,10 @@ public class Alquilar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
-        if (combo.getSelectedIndex() == 0 || txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty()) {
+        int pma=17;
+        int precioFijoCamiones=20 * pma;
+        int montoCamion=40;
+        if ( combo.getSelectedIndex() == 0 ||txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Complete todos los campos");
         } else {
             double preciofinal = 0;
@@ -188,8 +196,15 @@ public class Alquilar extends javax.swing.JPanel {
                     preciofinal = precioBase + 2 * dias;
                     break;
                 case "Furgoneta Carga":
-                    preciofinal = precioBase + 2 * dias;
+                    preciofinal = precioBase + precioFijoCamiones * dias;
                     break;
+                     case "Camion":
+                    preciofinal = precioBase + precioFijoCamiones + montoCamion* dias;
+            
+                    break;
+                    default:
+                        lblerror.setText("");
+                        break;
             }
 
             Object[] fila = new Object[4];
@@ -270,6 +285,7 @@ public class Alquilar extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblerror;
     private javax.swing.JTable tablaReporte;
     private javax.swing.JTextField txtDias;
     private javax.swing.JTextField txtMatricula;

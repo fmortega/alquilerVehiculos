@@ -28,7 +28,7 @@ public final class AdminVehiculosSA extends javax.swing.JFrame {
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         Date sistfecha = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-YYYY");
-        fecha.setText("Fecha "+formato.format(sistfecha));
+        fecha.setText("Fecha " + formato.format(sistfecha));
         Timer tiempo = new Timer(100, new AdminVehiculosSA.horas());
         tiempo.start();
     }
@@ -47,14 +47,14 @@ public final class AdminVehiculosSA extends javax.swing.JFrame {
             String pmAm = "hh:mm:ss a";
             SimpleDateFormat format = new SimpleDateFormat(pmAm);
             Calendar hoy = Calendar.getInstance();
-            hora.setText("Hora "+String.format(format.format(sisthora), hoy));
+            hora.setText("Hora " + String.format(format.format(sisthora), hoy));
         }
     }
 
     public void paneles(JPanel p) {
-        panelAlquilar.setSize(990, 680);
-        //panelAlquilar.setLocation(250, 0);
-        //  panelPrincipal.removeAll();
+        int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+        int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        panelAlquilar.setSize(ancho-230, alto);
         panelPrincipal.add(panelAlquilar, BorderLayout.CENTER);
         panelPrincipal.revalidate();
         panelPrincipal.repaint();

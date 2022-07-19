@@ -21,6 +21,7 @@ public class Alquilar extends javax.swing.JPanel {
 
         initComponents();
         model = (DefaultTableModel) tablaReporte.getModel();
+       
         btnGuardar.setEnabled(false);
     }
 
@@ -31,7 +32,7 @@ public class Alquilar extends javax.swing.JPanel {
     }
 
     public boolean validacion() {
-        return !(combo.getSelectedIndex() == 0 || txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty());
+        return !(txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty());
       
     }
 
@@ -93,6 +94,9 @@ public class Alquilar extends javax.swing.JPanel {
         txtDias.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtDiasKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDiasKeyTyped(evt);
             }
         });
 
@@ -217,12 +221,13 @@ public class Alquilar extends javax.swing.JPanel {
             fila[3] = preciofinal;
             model.addRow(fila);
             DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+            
             modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
             tablaReporte.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
             tablaReporte.getColumnModel().getColumn(1).setCellRenderer(modelocentrar);
             tablaReporte.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
             tablaReporte.getColumnModel().getColumn(3).setCellRenderer(modelocentrar);
-
+          
             limpiar();
             btnGuardar.setEnabled(false);
         }
@@ -274,6 +279,11 @@ public class Alquilar extends javax.swing.JPanel {
             btnGuardar.setEnabled(false);
         }
     }//GEN-LAST:event_comboMouseClicked
+
+    private void txtDiasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiasKeyTyped
+        char c = evt.getKeyChar();
+        if(c<'0' ||c >'9')evt.consume();
+    }//GEN-LAST:event_txtDiasKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

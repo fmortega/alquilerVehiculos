@@ -12,7 +12,6 @@ public class Alquilar extends javax.swing.JPanel {
 
     static int dias;
     static String matricula;
-    static String placa;
     static double precioBase = 50.0;
     DefaultTableModel model;
     String tipo;
@@ -194,10 +193,10 @@ public class Alquilar extends javax.swing.JPanel {
             String combo2 = (String) combo.getSelectedItem();
             switch (combo2) {
                 case "Coche":
-                    preciofinal = precioBase + 1.5 * dias;
+                    preciofinal = precioBase + 1.5  * dias;
                     break;
                 case "Microbus":
-                    preciofinal = precioBase + 2 * dias;
+                    preciofinal = precioBase + 1.5+ 2 * dias;
                     break;
                 case "Furgoneta Carga":
                     preciofinal = precioBase + precioFijoCamiones * dias;

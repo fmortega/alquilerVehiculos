@@ -4,8 +4,15 @@ public class Vehiculo {
 
     private String matricula;
     private String tipoVehiculo;
-    private double precioBase;
+   double precioBase;
     private int dias;
+
+    public Vehiculo(String matricula, String tipoVehiculo, int dias) {
+        this.matricula = matricula;
+        this.tipoVehiculo = tipoVehiculo;
+        this.precioBase = 50;
+        this.dias = dias;
+    }
 
     public int getDias() {
         return dias;
@@ -13,10 +20,6 @@ public class Vehiculo {
 
     public void setDias(int dias) {
         this.dias = dias;
-    }
-
-    public Vehiculo() {
-
     }
 
     public String getMatricula() {
@@ -43,14 +46,10 @@ public class Vehiculo {
         this.precioBase = precioBase;
     }
 
-    public double calculaPrecio(int dias,String matricula) {
-        if (tipoVehiculo.equals("Coche")) {
-            double pre;
-            pre = precioBase * (double) dias + 1.5;
-            return pre;
-        }
-
-        return 0;
+    public double calculaPrecio(int dias,double precio) {
+        double precioBase=this.precioBase;
+        double impuesto = 0;
+        return precioBase *impuesto;
     }
 
 }

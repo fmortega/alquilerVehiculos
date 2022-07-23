@@ -11,16 +11,17 @@ import javax.swing.table.DefaultTableModel;
 public class Alquilar extends javax.swing.JPanel {
 
     static int dias;
-    static String matricula;
-    static double precioBase = 50.0;
+    String matricula;
+    double preciovehiculo;
     DefaultTableModel model;
     String tipo;
-
+    Vehiculo vehiculo;
+    
     public Alquilar() {
 
         initComponents();
         model = (DefaultTableModel) tablaReporte.getModel();
-       
+
         btnGuardar.setEnabled(false);
     }
 
@@ -32,7 +33,7 @@ public class Alquilar extends javax.swing.JPanel {
 
     public boolean validacion() {
         return !(txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty());
-      
+
     }
 
     @SuppressWarnings("unchecked")
@@ -119,7 +120,7 @@ public class Alquilar extends javax.swing.JPanel {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtDias, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(434, Short.MAX_VALUE))
+                .addContainerGap(414, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnGuardar)
@@ -169,8 +170,11 @@ public class Alquilar extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,54 +186,60 @@ public class Alquilar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        int pma=17;
-        int precioFijoCamiones=20 * pma;
-        int montoCamion=40;
-        if ( combo.getSelectedIndex() == 0 ||txtDias.getText().isEmpty() || txtMatricula.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Complete todos los campos");
-        } else {
-            double preciofinal = 0;
-            int dias = Integer.parseInt(txtDias.getText());
-            String combo2 = (String) combo.getSelectedItem();
-            switch (combo2) {
-                case "Coche":
-                    preciofinal = precioBase + 1.5  * dias;
-                    break;
-                case "Microbus":
-                    preciofinal = precioBase + 1.5+ 2 * dias;
-                    break;
-                case "Furgoneta Carga":
-                    preciofinal = precioBase + precioFijoCamiones * dias;
-                    break;
-                     case "Camion":
-                    preciofinal = precioBase + precioFijoCamiones + montoCamion* dias;
-            
-                    break;
-                    default:
-                        lblerror.setText("");
-                        break;
-            }
-
-            Object[] fila = new Object[4];
-            fila[0] = combo.getSelectedItem();
-
-            fila[1] = txtMatricula.getText();
-
-            fila[2] = dias;
-
-            fila[3] = preciofinal;
-            model.addRow(fila);
-            DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
-            
-            modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-            tablaReporte.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
-            tablaReporte.getColumnModel().getColumn(1).setCellRenderer(modelocentrar);
-            tablaReporte.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
-            tablaReporte.getColumnModel().getColumn(3).setCellRenderer(modelocentrar);
+        matricula = txtMatricula.getText();
+        dias = Integer.parseInt(txtDias.getText());
+        tipo = (String) combo.getSelectedItem();
+        
+       
+        double preciofinal;
           
-            limpiar();
-            btnGuardar.setEnabled(false);
+        switch (tipo) {
+            case "Coche":
+                vehiculo=new Coche(matricula, tipo, dias, 1.5);
+               vehiculo.setTipoVehiculo("Coche");
+             
+             
+                break;
+            case "Microbus":
+                vehiculo=new Microbus(2, matricula, tipo, dias);
+                vehiculo.setTipoVehiculo("Microbus");
+                
+                break;
+            case "Furgoneta Carga":
+               vehiculo.setTipoVehiculo("Furgoneta Carga");
+                break;
+            case "Camion":
+                vehiculo.setTipoVehiculo("Camion");
+
+                break;
+            default:
+               
+                break;
         }
+
+        vehiculo.setDias(dias);
+        vehiculo.setMatricula(matricula);
+        Object[] fila = new Object[4];
+        fila[0] = vehiculo.getTipoVehiculo();
+
+        fila[1] = vehiculo.getMatricula();
+
+        fila[2] = vehiculo.getDias();
+
+        fila[3] = preciofinal=vehiculo.calculaPrecio(dias,preciovehiculo);
+        model.addRow(fila);
+      
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        tablaReporte.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
+        tablaReporte.getColumnModel().getColumn(1).setCellRenderer(modelocentrar);
+        tablaReporte.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
+        tablaReporte.getColumnModel().getColumn(3).setCellRenderer(modelocentrar);
+
+        limpiar();
+        btnGuardar.setEnabled(false);
+
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -281,7 +291,8 @@ public class Alquilar extends javax.swing.JPanel {
 
     private void txtDiasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiasKeyTyped
         char c = evt.getKeyChar();
-        if(c<'0' ||c >'9')evt.consume();
+        if (c < '0' || c > '9')
+            evt.consume();
     }//GEN-LAST:event_txtDiasKeyTyped
 
 

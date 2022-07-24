@@ -16,7 +16,9 @@ public class Alquilar extends javax.swing.JPanel {
     DefaultTableModel model;
     String tipo;
     Vehiculo vehiculo;
-    
+    double preciofinal;
+    double preciomicrobus = 2;
+
     public Alquilar() {
 
         initComponents();
@@ -189,31 +191,32 @@ public class Alquilar extends javax.swing.JPanel {
         matricula = txtMatricula.getText();
         dias = Integer.parseInt(txtDias.getText());
         tipo = (String) combo.getSelectedItem();
-        
-       
-        double preciofinal;
-          
+
         switch (tipo) {
             case "Coche":
-                vehiculo=new Coche(matricula, tipo, dias, 1.5);
-               vehiculo.setTipoVehiculo("Coche");
-             
-             
+                vehiculo = new Coche(matricula, tipo, dias, 1.5);
+                vehiculo.setTipoVehiculo("Coche");
+                preciofinal = vehiculo.calculaPrecio(1.5, dias);
                 break;
             case "Microbus":
-                vehiculo=new Microbus(2, matricula, tipo, dias);
+                vehiculo = new Microbus(2, matricula, tipo, dias);
                 vehiculo.setTipoVehiculo("Microbus");
-                
+                preciofinal = vehiculo.calculaPrecio(1.5 + preciomicrobus, dias);
+
                 break;
             case "Furgoneta Carga":
-               vehiculo.setTipoVehiculo("Furgoneta Carga");
+                vehiculo.setTipoVehiculo("Furgoneta Carga");
+                vehiculo = new Furgoneta(matricula, tipo, dias);
+                preciofinal = vehiculo.calculaPrecio(dias);
                 break;
             case "Camion":
                 vehiculo.setTipoVehiculo("Camion");
+                vehiculo = new Camion(matricula, tipo, dias);
+                preciofinal = vehiculo.calculaPrecio(dias);
 
                 break;
             default:
-               
+
                 break;
         }
 
@@ -226,9 +229,9 @@ public class Alquilar extends javax.swing.JPanel {
 
         fila[2] = vehiculo.getDias();
 
-        fila[3] = preciofinal=vehiculo.calculaPrecio(dias,preciovehiculo);
+        fila[3] = preciofinal;
         model.addRow(fila);
-      
+
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
 
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);

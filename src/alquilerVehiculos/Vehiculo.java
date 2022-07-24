@@ -4,7 +4,7 @@ public class Vehiculo {
 
     private String matricula;
     private String tipoVehiculo;
-   double precioBase;
+    double precioBase;
     private int dias;
 
     public Vehiculo(String matricula, String tipoVehiculo, int dias) {
@@ -46,10 +46,13 @@ public class Vehiculo {
         this.precioBase = precioBase;
     }
 
-    public double calculaPrecio(int dias,double precio) {
-        double precioBase=this.precioBase;
-        double impuesto = 0;
-        return precioBase *impuesto;
+    public double calculaPrecio(double precio,int dias) {
+
+        return precio * dias;
+    }
+
+    double calculaPrecio(int dias) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

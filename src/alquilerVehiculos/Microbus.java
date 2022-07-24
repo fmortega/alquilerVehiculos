@@ -18,7 +18,7 @@ public class Microbus extends Vehiculo {
     }
 
     @Override
-    public double calculaPrecio(int dias, double precio) {
+    public double calculaPrecio(double precio,int dias) {
         return precioBase + (precio * dias);
     }
 }

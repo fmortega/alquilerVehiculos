@@ -15,11 +15,21 @@ public class Vehiculo {
     }
 
     public int getDias() {
+         if (dias <= 0) {
+            return dias = 1;
+        } else {
+         
+         }
         return dias;
     }
 
     public void setDias(int dias) {
-        this.dias = dias;
+        if (dias <= 0) {
+            dias = 1;
+        } else {
+            this.dias = dias;
+        }
+
     }
 
     public String getMatricula() {
@@ -46,7 +56,7 @@ public class Vehiculo {
         this.precioBase = precioBase;
     }
 
-    public double calculaPrecio(double precio,int dias) {
+    public double calculaPrecio(double precio, int dias) {
 
         return precio * dias;
     }

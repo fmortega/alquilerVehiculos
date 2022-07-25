@@ -11,11 +11,16 @@ public class Coche extends Vehiculo {
     }
 
     public double getPrecioCoche() {
+        
         return precioCoche;
     }
 
     public void setPrecioCoche(double precioCoche) {
+        if(precioCoche<=0){
+            precioCoche=1;
+        }else{
         this.precioCoche = precioCoche;
+        }
     }
 
     @Override

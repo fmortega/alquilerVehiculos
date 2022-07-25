@@ -38,6 +38,63 @@ public class Alquilar extends javax.swing.JPanel {
 
     }
 
+    public void guardar() {
+        matricula = txtMatricula.getText();
+        dias = Integer.parseInt(txtDias.getText());
+        tipo = (String) combo.getSelectedItem();
+
+        switch (tipo) {
+            case "Coche":
+                vehiculo = new Coche(matricula, tipo, dias, 1.5);
+                vehiculo.setTipoVehiculo("Coche");
+                preciofinal = vehiculo.calculaPrecio(1.5, dias);
+                break;
+            case "Microbus":
+                vehiculo = new Microbus(2, matricula, tipo, dias);
+                vehiculo.setTipoVehiculo("Microbus");
+                preciofinal = vehiculo.calculaPrecio(1.5 + preciomicrobus, dias);
+
+                break;
+            case "Furgoneta Carga":
+                vehiculo.setTipoVehiculo("Furgoneta Carga");
+                vehiculo = new Furgoneta(matricula, tipo, dias);
+                preciofinal = vehiculo.calculaPrecio(dias);
+                break;
+            case "Camion":
+                vehiculo.setTipoVehiculo("Camion");
+                vehiculo = new Camion(matricula, tipo, dias);
+                preciofinal = vehiculo.calculaPrecio(dias);
+
+                break;
+            default:
+
+                break;
+        }
+
+        vehiculo.setDias(dias);
+        vehiculo.setMatricula(matricula);
+        Object[] fila = new Object[4];
+        fila[0] = vehiculo.getTipoVehiculo();
+
+        fila[1] = vehiculo.getMatricula();
+
+        fila[2] = vehiculo.getDias();
+
+        fila[3] = preciofinal;
+        model.addRow(fila);
+
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        tablaReporte.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
+        tablaReporte.getColumnModel().getColumn(1).setCellRenderer(modelocentrar);
+        tablaReporte.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
+        tablaReporte.getColumnModel().getColumn(3).setCellRenderer(modelocentrar);
+
+        limpiar();
+        btnGuardar.setEnabled(false);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -188,61 +245,8 @@ public class Alquilar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        matricula = txtMatricula.getText();
-        dias = Integer.parseInt(txtDias.getText());
-        tipo = (String) combo.getSelectedItem();
 
-        switch (tipo) {
-            case "Coche":
-                vehiculo = new Coche(matricula, tipo, dias, 1.5);
-                vehiculo.setTipoVehiculo("Coche");
-                preciofinal = vehiculo.calculaPrecio(1.5, dias);
-                break;
-            case "Microbus":
-                vehiculo = new Microbus(2, matricula, tipo, dias);
-                vehiculo.setTipoVehiculo("Microbus");
-                preciofinal = vehiculo.calculaPrecio(1.5 + preciomicrobus, dias);
-
-                break;
-            case "Furgoneta Carga":
-                vehiculo.setTipoVehiculo("Furgoneta Carga");
-                vehiculo = new Furgoneta(matricula, tipo, dias);
-                preciofinal = vehiculo.calculaPrecio(dias);
-                break;
-            case "Camion":
-                vehiculo.setTipoVehiculo("Camion");
-                vehiculo = new Camion(matricula, tipo, dias);
-                preciofinal = vehiculo.calculaPrecio(dias);
-
-                break;
-            default:
-
-                break;
-        }
-
-        vehiculo.setDias(dias);
-        vehiculo.setMatricula(matricula);
-        Object[] fila = new Object[4];
-        fila[0] = vehiculo.getTipoVehiculo();
-
-        fila[1] = vehiculo.getMatricula();
-
-        fila[2] = vehiculo.getDias();
-
-        fila[3] = preciofinal;
-        model.addRow(fila);
-
-        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
-
-        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-        tablaReporte.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
-        tablaReporte.getColumnModel().getColumn(1).setCellRenderer(modelocentrar);
-        tablaReporte.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
-        tablaReporte.getColumnModel().getColumn(3).setCellRenderer(modelocentrar);
-
-        limpiar();
-        btnGuardar.setEnabled(false);
-
+        guardar();
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
